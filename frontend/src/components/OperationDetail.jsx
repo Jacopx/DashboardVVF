@@ -40,6 +40,12 @@ export default function OperationDetail({ operation, onClose }) {
   const lat = parseFloat(data?.y)
   const lng = parseFloat(data?.x)
   const hasCoords = !isNaN(lat) && !isNaN(lng)
+  const duration = (data?.dt_exit && data?.dt_close) ? (() => {
+    const diff = new Date(data.dt_close) - new Date(data.dt_exit)
+    const hours = Math.floor(diff / 3600000)
+    const minutes = Math.round((diff % 3600000) / 60000)
+    return { hours, minutes }
+  })() : { hours: '—', minutes: '' }
 
   return (
     <div className="rounded-md border overflow-y-auto mt-12 max-h-screen">
@@ -65,6 +71,7 @@ export default function OperationDetail({ operation, onClose }) {
               <DetailRow label="Data" value={data.date} />
               <DetailRow label="Chiamata" value={data.dt_exit} />
               <DetailRow label="Chiusura" value={data.dt_close} />
+              <DetailRow label="Durata" value={`${duration.hours}h ${duration.minutes}m`} />
               <DetailRow label="Luogo" value={data.loc} />
               <DetailRow label="Capo partenza" value={data.boss} />
               <DetailRow label="Intervento provinciale" value={data.opn} />

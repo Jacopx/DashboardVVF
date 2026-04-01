@@ -40,7 +40,7 @@ async def get_operations(
     if date_to:
         stmt = stmt.where(Operation.date <= date_to)
 
-    stmt = stmt.order_by(Operation.date.desc()).limit(limit).offset(offset)
+    stmt = stmt.order_by(Operation.date.desc(),Operation.id.desc()).limit(limit).offset(offset)
 
     result = await db.execute(stmt)
     return result.scalars().all()

@@ -48,14 +48,14 @@ export default function TopVehicles({ starts }) {
     }
 
     return (
-        <Card>
-            <CardHeader className="pb-2">
+        <Card className="h-full flex flex-col">
+            <CardHeader className="pb-0 pt-3 px-3 shrink-0">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                     Top 8 veicoli
                 </CardTitle>
             </CardHeader>
-            <CardContent>
-                <ReactECharts option={option} style={{ height: '220px' }} />
+            <CardContent className="flex-1 min-h-0 p-2">
+                <ReactECharts option={option} style={{ height: '100%' }} opts={{ renderer: 'svg' }} />
             </CardContent>
         </Card>
     )
