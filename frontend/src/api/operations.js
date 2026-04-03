@@ -33,3 +33,9 @@ export async function fetchStarts(year) {
   
   return operations.flatMap(op => op.starts)
 }
+
+export async function fetchAllOperations() {
+  const response = await fetch('/api/operations?limit=50000')
+  if (!response.ok) throw new Error('Failed to fetch all operations')
+  return response.json()
+}
