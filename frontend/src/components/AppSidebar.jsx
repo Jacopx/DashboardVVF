@@ -1,4 +1,4 @@
-import { Flame, LayoutDashboard, List, BarChart2 } from 'lucide-react'
+import { Flame, LayoutDashboard, List, BarChart2, Github } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import {
   Sidebar,
@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
+  SidebarFooter,
 } from '@/components/ui/sidebar'
 
 const items = [
@@ -19,8 +20,8 @@ const items = [
 ]
 
 export default function AppSidebar() {
-  const navigate  = useNavigate()
-  const location  = useLocation()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   return (
     <Sidebar collapsible="icon">
@@ -48,6 +49,15 @@ export default function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="p-4">
+        <div className="group-data-[collapsible=icon]:hidden space-y-1">
+          <a href="https://github.com/jacopx" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
+            <Github size={12} />
+            github.com/jacopx
+          </a>
+          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Jacopx</p>
+        </div>
+      </SidebarFooter>
     </Sidebar>
   )
 }
