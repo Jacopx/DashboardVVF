@@ -3,6 +3,8 @@ import { fetchAllOperations } from '@/api/operations'
 
 import YearMonthTable from '@/components/charts/YearMonthTable'
 import YearProgressChart from '@/components/charts/YearProgressChart'
+import StackedTypologyChart from '@/components/charts/StackedTypologyChart'
+import LocalityTypologyChart from '@/components/charts/LocalityTypologyChart'
 
 export default function Charts() {
   const { data, isLoading, error } = useQuery({
@@ -18,6 +20,8 @@ export default function Charts() {
       <h1 className="text-3xl font-bold">Charts</h1>
       <YearMonthTable data={data} />
       <YearProgressChart data={data} />
+      <StackedTypologyChart data={data} />
+      <LocalityTypologyChart data={data} />
     </div>
   )
 }
