@@ -30,8 +30,24 @@ const columns = [
   { accessorKey: 'opn', header: 'Num', size: 100 },
   { accessorKey: 'date', header: 'Data', size: 120 },
   { accessorKey: 'typology', header: 'Tipologia', size: 200 },
-  { accessorKey: 'loc', header: 'Luogo', size: 200 },
-  { accessorKey: 'boss', header: 'Capo Partenza', size: 150 },
+  {
+    header: 'Durata',
+    accessorFn: row => {
+      // calculate here from row.dt_exit and row.dt_close
+      if (!row.dt_exit || !row.dt_close) return 'N/A'
+
+      const exit = new Date(row.dt_exit)
+      const close = new Date(row.dt_close)
+      const diffMs = close - exit
+      const hours = Math.floor(diffMs / 3600000)
+      const minutes = Math.round((diffMs % 3600000) / 60000)
+
+      return `${hours}h ${minutes.toString().padStart(2, '0')}m`
+    }, 
+    size: 50
+  },
+  { accessorKey: 'loc', header: 'Luogo', size: 150 },
+  { accessorKey: 'boss', header: 'Capo Partenza', size: 100 },
 ]
 
 export default function OperationsTable({ data, onRowClick }) {
