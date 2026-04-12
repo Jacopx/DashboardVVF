@@ -13,15 +13,23 @@ import {
   SidebarFooter,
 } from '@/components/ui/sidebar'
 
+import { useQuery } from '@tanstack/react-query'
+import { fetchLastUpdate } from '@/api/operations'
+
 const items = [
-  { title: 'Dashboard',  url: '/',            icon: LayoutDashboard },
-  { title: 'Operations', url: '/operations',  icon: List },
-  { title: 'Charts',     url: '/charts',      icon: BarChart2 },
+  { title: 'Dashboard', url: '/', icon: LayoutDashboard },
+  { title: 'Operations', url: '/operations', icon: List },
+  { title: 'Charts', url: '/charts', icon: BarChart2 },
 ]
 
 export default function AppSidebar() {
   const navigate = useNavigate()
   const location = useLocation()
+
+  const { data: lastUpdate } = useQuery({
+    queryKey: ['last-update'],
+    queryFn: fetchLastUpdate,
+  })
 
   return (
     <Sidebar collapsible="icon">
@@ -50,6 +58,9 @@ export default function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-4">
+        <p className="text-xs text-muted-foreground">
+          Last update: {lastUpdate?.last_update ?? '—'}
+        </p>
         <div className="group-data-[collapsible=icon]:hidden space-y-1">
           <a href="https://github.com/jacopx" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
             <Github size={12} />

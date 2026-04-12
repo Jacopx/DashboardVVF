@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import func, select
 from typing import Optional
 
 from database import get_db
@@ -10,16 +10,17 @@ from schemas import OperationOut, OperationDetailOut
 
 router = APIRouter(prefix="/api/operations", tags=["operations"])
 
+
 @router.get("", response_model=list[OperationOut])
 async def get_operations(
-    db:        AsyncSession  = Depends(get_db),
-    year:      Optional[str] = Query(None, description="Filter by year e.g. 2023"),
-    typology:  Optional[str] = Query(None, description="Filter by typology"),
-    boss:      Optional[str] = Query(None, description="Filter by boss name"),
+    db: AsyncSession = Depends(get_db),
+    year: Optional[str] = Query(None, description="Filter by year e.g. 2023"),
+    typology: Optional[str] = Query(None, description="Filter by typology"),
+    boss: Optional[str] = Query(None, description="Filter by boss name"),
     date_from: Optional[str] = Query(None, description="Start date YYYY-MM-DD"),
-    date_to:   Optional[str] = Query(None, description="End date YYYY-MM-DD"),
-    limit:     int           = Query(10000, le=50000),
-    offset:    int           = Query(0),
+    date_to: Optional[str] = Query(None, description="End date YYYY-MM-DD"),
+    limit: int = Query(10000, le=50000),
+    offset: int = Query(0),
 ):
     """
     Return operations list.
@@ -40,31 +41,29 @@ async def get_operations(
     if date_to:
         stmt = stmt.where(Operation.date <= date_to)
 
-    stmt = stmt.order_by(Operation.date.desc(),Operation.id.desc()).limit(limit).offset(offset)
+    stmt = (
+        stmt.order_by(Operation.date.desc(), Operation.id.desc())
+        .limit(limit)
+        .offset(offset)
+    )
 
     result = await db.execute(stmt)
     return result.scalars().all()
 
 
 @router.get("/{year}/full", response_model=list[OperationDetailOut])
-async def get_operations_with_starts(
-    year: str,
-    db:   AsyncSession = Depends(get_db)
-):
+async def get_operations_with_starts(year: str, db: AsyncSession = Depends(get_db)):
     # Query 1 — All the operations for the given year
-    op_result = await db.execute(
-        select(Operation).where(Operation.year == year)
-    )
+    op_result = await db.execute(select(Operation).where(Operation.year == year))
     operations = op_result.scalars().all()
 
     # Query 2 — All the starts for the given year
-    starts_result = await db.execute(
-        select(Start).where(Start.year == year)
-    )
+    starts_result = await db.execute(select(Start).where(Start.year == year))
     starts = starts_result.scalars().all()
 
     # Group starts by operation ID in-memory to avoid N+1 query problem
     from collections import defaultdict
+
     starts_by_op = defaultdict(list)
     for start in starts:
         starts_by_op[start.op_id].append(start)
@@ -82,8 +81,8 @@ async def get_operations_with_starts(
 @router.get("/{year}/{id}", response_model=OperationDetailOut)
 async def get_operation_detail(
     year: str,
-    id:   int,
-    db:   AsyncSession = Depends(get_db),
+    id: int,
+    db: AsyncSession = Depends(get_db),
 ):
     """
     Return a single operation by its composite key (year + ID),
@@ -91,7 +90,7 @@ async def get_operation_detail(
     """
     op_result = await db.execute(
         select(Operation).where(
-            Operation.id   == id,
+            Operation.id == id,
             Operation.year == year,
         )
     )
@@ -103,7 +102,7 @@ async def get_operation_detail(
     starts_result = await db.execute(
         select(Start).where(
             Start.op_id == id,
-            Start.year  == year,
+            Start.year == year,
         )
     )
     starts = starts_result.scalars().all()
@@ -112,3 +111,10 @@ async def get_operation_detail(
         **OperationOut.model_validate(operation).model_dump(),
         starts=starts,
     )
+
+
+@router.get("/last-update")
+async def get_last_update(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(func.max(Operation.date)))
+    last_date = result.scalar()
+    return {"last_update": str(last_date) if last_date else None}
