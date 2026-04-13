@@ -59,6 +59,9 @@ export default function AppSidebar() {
       </SidebarContent>
       <SidebarFooter className="p-4">
         <p className="text-xs text-muted-foreground">
+          v1.0
+        </p>
+        <p className="text-xs text-muted-foreground">
           Last update: {lastUpdate?.last_update ?? '—'}
         </p>
         <div className="group-data-[collapsible=icon]:hidden space-y-1">
