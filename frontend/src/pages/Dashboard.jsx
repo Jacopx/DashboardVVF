@@ -9,8 +9,9 @@ import AverageDuration from '@/components/dashboard/AverageDuration'
 import TypologyDistribution from '@/components/dashboard/TypologyDistribution'
 import LocalityDistribution from '@/components/dashboard/LocalityDistribution'
 import TopVehicles from '@/components/dashboard/TopVehicles'
-import WeekdayHeatmap from '@/components/dashboard/WeekdayHeatmap'
 import WorstDay from '@/components/dashboard/WorstDay'
+
+import OperationsTable from '@/components/OperationsTable'
 
 export default function Dashboard() {
   const currentYear = new Date().getFullYear().toString()
@@ -29,9 +30,10 @@ export default function Dashboard() {
   if (error) return <p className="px-8 pt-4 text-destructive">Error: {error.message}</p>
 
   return (
-    <div className="px-8 pt-4 pb-4 h-screen flex flex-col gap-4">
+    <div className="px-8 pt-4 pb-4 min-h-screen flex flex-col gap-4">
       <h1 className="text-3xl font-bold shrink-0">Dashboard {currentYear}</h1>
-      <div className="grid grid-cols-3 gap-4 flex-1 min-h-0 auto-rows-[250px]">
+
+      <div className="grid grid-cols-3 gap-4 auto-rows-[250px]">
         <TotalOperations data={data} />
         <div className="col-span-2">
           <YearHeatmap data={data} year={currentYear} />
@@ -43,6 +45,9 @@ export default function Dashboard() {
         <WorstDay data={data} />
         {starts && <TopVehicles starts={starts} />}
       </div>
+
+      <OperationsTable data={data} hideInput/>
+
     </div>
   )
 }

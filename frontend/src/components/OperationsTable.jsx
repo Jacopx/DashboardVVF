@@ -43,14 +43,14 @@ const columns = [
       const minutes = Math.round((diffMs % 3600000) / 60000)
 
       return `${hours}h ${minutes.toString().padStart(2, '0')}m`
-    }, 
+    },
     size: 50
   },
   { accessorKey: 'loc', header: 'Luogo', size: 150 },
   { accessorKey: 'boss', header: 'Capo Partenza', size: 100 },
 ]
 
-export default function OperationsTable({ data, onRowClick }) {
+export default function OperationsTable({ data, onRowClick, hideInput = false }) {
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState([])
 
@@ -80,22 +80,26 @@ export default function OperationsTable({ data, onRowClick }) {
   return (
     <div className="space-y-4">
       <div className="flex gap-4 items-center">
-        <Input
+        {!hideInput && (<Input
           placeholder="Search anything..."
           value={globalFilter}
           onChange={e => setGlobalFilter(e.target.value)}
           className="max-w-sm"
-        />
-        <Select value={selectedYear} onValueChange={setSelectedYear}>
-          <SelectTrigger className="w-32">
-            <SelectValue placeholder="Year" />
-          </SelectTrigger>
-          <SelectContent>
-            {years.map(year => (
-              <SelectItem key={year} value={year}>{year}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        />)}
+        {!hideInput && (
+          <Select value={selectedYear} onValueChange={setSelectedYear}>
+            <SelectTrigger className="w-32">
+              <SelectValue placeholder="Year" />
+            </SelectTrigger>
+            <SelectContent>
+              {years.map(year => (
+                <SelectItem key={year} value={year}>
+                  {year}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

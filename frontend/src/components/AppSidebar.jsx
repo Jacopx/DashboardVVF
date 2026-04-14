@@ -58,20 +58,26 @@ export default function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-4">
-        <div className="group-data-[collapsible=icon]:hidden space-y-1">
-          <p className="text-xs text-muted-foreground">
-            v1.0
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Last update: {lastUpdate?.last_update ?? '—'}
-          </p>
-          <a href="https://github.com/jacopx" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
+        <div className="group-data-[collapsible=icon]:hidden space-y-2 text-xs text-muted-foreground">
+          <div className="flex items-center justify-between">
+            <span>Update: {lastUpdate?.last_update ?? '—'}</span>
+            <span>v1.0.1</span>
+          </div>
+
+          <a
+            href="https://github.com/jacopx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 hover:text-foreground transition-colors"
+          >
             <Github size={12} />
             github.com/jacopx
           </a>
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Jacopx</p>
+
+          <p className="pt-1">© {new Date().getFullYear()} Jacopx</p>
         </div>
       </SidebarFooter>
+
     </Sidebar>
   )
 }
