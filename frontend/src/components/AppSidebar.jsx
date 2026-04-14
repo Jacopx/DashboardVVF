@@ -58,13 +58,13 @@ export default function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-4">
-        <p className="text-xs text-muted-foreground">
-          v1.0
-        </p>
-        <p className="text-xs text-muted-foreground">
-          Last update: {lastUpdate?.last_update ?? '—'}
-        </p>
         <div className="group-data-[collapsible=icon]:hidden space-y-1">
+          <p className="text-xs text-muted-foreground">
+            v1.0
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Last update: {lastUpdate?.last_update ?? '—'}
+          </p>
           <a href="https://github.com/jacopx" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
             <Github size={12} />
             github.com/jacopx

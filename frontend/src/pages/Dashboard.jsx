@@ -42,7 +42,6 @@ export default function Dashboard() {
         <LocalityDistribution data={data} />
         <WorstDay data={data} />
         {starts && <TopVehicles starts={starts} />}
-        {/* <WeekdayHeatmap data={data} /> */}
       </div>
     </div>
   )

@@ -135,7 +135,7 @@ export default function YearHeatmap({ data, year }) {
         <Card>
             <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Activity Heatmap {year}
+                    Heatmap interventi {year}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -149,7 +149,7 @@ export default function YearHeatmap({ data, year }) {
                             style={{ left: tooltip.ex + 10, top: tooltip.ey + 10 }}
                         >
                             {tooltip.count > 0
-                                ? `${tooltip.dateStr}: ${tooltip.count} operations`
+                                ? `${tooltip.dateStr}: ${tooltip.count} interventi`
                                 : tooltip.dateStr}
                         </div>
                     )}
