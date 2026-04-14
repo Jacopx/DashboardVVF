@@ -19,7 +19,7 @@ export default function WorstDay({ data }) {
         return {
             date,
             count,
-            label: d.toLocaleDateString('en-GB', {
+            label: d.toLocaleDateString('it-IT', {
                 weekday: 'long',
                 day: 'numeric',
                 month: 'long',
