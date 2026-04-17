@@ -48,7 +48,7 @@ export default function LocalityDistribution({ data }) {
     }
 
     return (
-        <Card className="h-full flex flex-col">
+        <Card className="h-full min-h-[250px] flex flex-col">
             <CardHeader className="pb-0 pt-3 px-3 shrink-0">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                     Top 8 località

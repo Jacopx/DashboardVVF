@@ -33,7 +33,7 @@ export default function Dashboard() {
     <div className="px-8 pt-4 pb-4 min-h-screen flex flex-col gap-4">
       <h1 className="text-3xl font-bold shrink-0">Dashboard {currentYear}</h1>
 
-      <div className="grid grid-cols-3 gap-4 auto-rows-[250px]">
+      <div className="grid grid-cols-3 gap-4">
         <TotalOperations data={data} />
         <div className="col-span-2">
           <YearHeatmap data={data} year={currentYear} />
