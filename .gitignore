@@ -6,4 +6,4 @@ venv
 *.pyd
 __pycache__/
 *.yml
-
+.DS_Store
