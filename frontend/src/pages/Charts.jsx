@@ -6,6 +6,7 @@ import YearProgressChart from '@/components/charts/YearProgressChart'
 import StackedTypologyChart from '@/components/charts/StackedTypologyChart'
 import LocalityTypologyChart from '@/components/charts/LocalityTypologyChart'
 import DayOfYearHeatmap from '@/components/charts/DayOfYearHeatmap'
+import ActivityHeatmaps from '@/components/charts/ActivityHeatmaps'
 
 export default function Charts() {
   const { data, isLoading, error } = useQuery({
@@ -21,6 +22,7 @@ export default function Charts() {
       <h1 className="text-3xl font-bold">Charts</h1>
       <YearMonthTable data={data} />
       <DayOfYearHeatmap data={data} />
+      <ActivityHeatmaps data={data} />
       <YearProgressChart data={data} />
       <StackedTypologyChart data={data} />
       <LocalityTypologyChart data={data} />

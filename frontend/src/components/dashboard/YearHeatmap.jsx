@@ -14,34 +14,47 @@ const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const COLORS = ['#1a1a1a', '#450a0a', '#7f1d1d', '#ef4444']
 
+// Returns 0=Mon … 6=Sun for a LOCAL date
 function dayRowIndex(d) {
-    return d.getDay() === 0 ? 6 : d.getDay() - 1  // Monday = 0, Sunday = 6
+    return d.getDay() === 0 ? 6 : d.getDay() - 1
+}
+
+// Format a local Date as YYYY-MM-DD without UTC shift
+function localIsoDate(d) {
+    const y = d.getFullYear()
+    const m = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${y}-${m}-${day}`
+}
+
+// Integer day-difference between two local dates (no DST drift)
+function daysBetween(a, b) {
+    const utcA = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())
+    const utcB = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate())
+    return Math.round((utcB - utcA) / 86400000)
 }
 
 function weekStartOnOrBefore(d) {
-    const result = new Date(d)
-    result.setDate(d.getDate() - dayRowIndex(d))
+    const result = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+    result.setDate(result.getDate() - dayRowIndex(result))
     return result
 }
 
 function weekEndOnOrAfter(d) {
-    const result = new Date(d)
-    result.setDate(d.getDate() + (6 - dayRowIndex(d)))
+    const result = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+    result.setDate(result.getDate() + (6 - dayRowIndex(result)))
     return result
-}
-
-function isoDate(d) {
-    return d.toISOString().slice(0, 10)
 }
 
 export default function YearHeatmap({ data, year }) {
     const [tooltip, setTooltip] = useState(null)
     const { svgContent, width, height } = useMemo(() => {
-        // Build counts map
+        // Build counts map using LOCAL date strings to avoid UTC shift
         const counts = {}
         data.forEach(op => {
             if (!op.dt_exit) return
-            const day = new Date(op.dt_exit).toISOString().slice(0, 10)
+            const d = new Date(op.dt_exit)
+            const day = localIsoDate(d)
             counts[day] = (counts[day] || 0) + 1
         })
 
@@ -56,11 +69,14 @@ export default function YearHeatmap({ data, year }) {
         }
 
         const yearInt = parseInt(year)
-        const start = weekStartOnOrBefore(new Date(yearInt, 0, 1))
-        const end = weekEndOnOrAfter(new Date(yearInt, 11, 31))
+        const jan1 = new Date(yearInt, 0, 1)
+        const dec31 = new Date(yearInt, 11, 31)
+        const start = weekStartOnOrBefore(jan1)
+        const end = weekEndOnOrAfter(dec31)
 
-        const msPerDay = 86400000
-        const weeks = Math.round((end - start) / msPerDay / 7) + 1
+        // Use integer day counts to avoid DST/rounding issues
+        const totalDays = daysBetween(start, end) + 1
+        const weeks = Math.ceil(totalDays / 7)
 
         const gridInnerW = weeks * CELL + (weeks - 1) * GAP
         const gridInnerH = 7 * CELL + 6 * GAP
@@ -78,38 +94,37 @@ export default function YearHeatmap({ data, year }) {
         // Month labels
         for (let m = 0; m < 12; m++) {
             const firstDay = new Date(yearInt, m, 1)
-            const weekIndex = Math.round((firstDay - start) / msPerDay / 7)
-            const x = OUTER_PAD + AXIS_WIDTH + AXIS_GAP + GRID_PAD + weekIndex * (CELL + GAP)
+            const weekIndex = Math.floor(daysBetween(start, firstDay) / 7)
+            const x = gridOriginX + weekIndex * (CELL + GAP)
             const y = OUTER_PAD + LABEL_ROW_HEIGHT - 2
             rects.push(
-                <text key={`m${m}`} x={x} y={y} fontSize={9} fill="#888"
-                    fontFamily="monospace">
+                <text key={`m${m}`} x={x} y={y} fontSize={9} fill="#888">
                     {MONTH_LABELS[m]}
                 </text>
             )
         }
 
-        // Day labels
+        // Day labels — show Tue(1), Thu(3), Sat(5), i.e. odd rows
         DAY_LABELS.forEach((label, row) => {
-            if (row % 2 === 0) return  // only Mon, Wed, Fri, Sun
+            if (row % 2 === 0) return  // skip Mon, Wed, Fri, Sun
             const x = OUTER_PAD + AXIS_WIDTH - 2
             const y = gridOriginY + row * (CELL + GAP) + CELL / 2
             rects.push(
                 <text key={`d${row}`} x={x} y={y} fontSize={9} fill="#888"
-                    fontFamily="monospace" textAnchor="end" dominantBaseline="middle">
+                    textAnchor="end" dominantBaseline="middle">
                     {label}
                 </text>
             )
         })
 
-        // Cells
-        const current = new Date(start)
-        while (current <= end) {
-            const weekIndex = Math.round((current - start) / msPerDay / 7)
+        // Cells — iterate by integer days to avoid DST drift
+        for (let i = 0; i < totalDays; i++) {
+            const current = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i)
+            const weekIndex = Math.floor(i / 7)
             const row = dayRowIndex(current)
             const x = gridOriginX + weekIndex * (CELL + GAP)
             const y = gridOriginY + row * (CELL + GAP)
-            const dateStr = isoDate(current)
+            const dateStr = localIsoDate(current)
             const inYear = current.getFullYear() === yearInt
             const count = inYear ? (counts[dateStr] || 0) : 0
             const fill = inYear ? color(count) : 'transparent'
@@ -124,8 +139,6 @@ export default function YearHeatmap({ data, year }) {
                     />
                 )
             }
-
-            current.setDate(current.getDate() + 1)
         }
 
         return { svgContent: rects, width: svgW, height: svgH }

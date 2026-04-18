@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import ReactECharts from 'echarts-for-react'
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const MONTHS = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu',
+    'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic']
 
 // Month start days (1-indexed day of year, non-leap)
 const MONTH_STARTS = [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
@@ -103,7 +103,7 @@ export default function DayOfYearHeatmap({ data }) {
                 color: ['#1a1a1a', '#3a2020', '#7a2020', '#c03030', '#ef4444'],
             },
             textStyle: { color: '#666', fontSize: 10 },
-            text: ['High', 'Low'],
+            text: ['Massimo', 'Minimo'],
         },
         series: [{
             type: 'heatmap',
