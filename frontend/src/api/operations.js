@@ -6,6 +6,9 @@ export async function fetchOperations(filters = {}) {
   if (filters.boss) params.append('boss', filters.boss)
   if (filters.date_from) params.append('date_from', filters.date_from)
   if (filters.date_to) params.append('date_to', filters.date_to)
+  if (filters.address) params.append('address', filters.address)
+  if (filters.caller) params.append('caller', filters.caller)
+  if (filters.operator) params.append('operator', filters.operator)
 
   params.append('limit', '10000')
 

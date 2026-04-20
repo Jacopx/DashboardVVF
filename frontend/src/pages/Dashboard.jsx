@@ -46,7 +46,7 @@ export default function Dashboard() {
         {starts && <TopVehicles starts={starts} />}
       </div>
 
-      <OperationsTable data={data} hideInput/>
+      <OperationsTable data={data.slice(0, 10)} hideInput/>
 
     </div>
   )

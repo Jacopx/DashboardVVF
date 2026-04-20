@@ -19,6 +19,9 @@ async def get_operations(
     boss: Optional[str] = Query(None, description="Filter by boss name"),
     date_from: Optional[str] = Query(None, description="Start date YYYY-MM-DD"),
     date_to: Optional[str] = Query(None, description="End date YYYY-MM-DD"),
+    address: Optional[str] = Query(None, description="Filter by address"),
+    caller: Optional[str] = Query(None, description="Filter by caller"),
+    operator: Optional[str] = Query(None, description="Filter by operator"),
     limit: int = Query(10000, le=50000),
     offset: int = Query(0),
 ):
@@ -40,6 +43,12 @@ async def get_operations(
         stmt = stmt.where(Operation.date >= date_from)
     if date_to:
         stmt = stmt.where(Operation.date <= date_to)
+    if address:
+        stmt = stmt.where(Operation.address.ilike(f"%{address}%"))
+    if caller:
+        stmt = stmt.where(Operation.caller.ilike(f"%{caller}%"))
+    if operator:
+        stmt = stmt.where(Operation.operator.ilike(f"%{operator}%"))
 
     stmt = (
         stmt.order_by(Operation.date.desc(), Operation.id.desc())

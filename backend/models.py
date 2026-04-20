@@ -16,6 +16,9 @@ class Operation(Base):
     y           = Column("y",        String(255))
     loc         = Column("loc",      String(255))
     boss        = Column("boss",     String(255))
+    address     = Column("address",  String(255))
+    caller      = Column("caller",   String(255))
+    operator    = Column("operator", String(255))
 
 
 class Start(Base):

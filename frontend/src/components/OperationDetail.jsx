@@ -69,12 +69,15 @@ export default function OperationDetail({ operation, onClose }) {
             {/* Left — operation details */}
             <div className="flex-1">
               <DetailRow label="Data" value={data.date} />
+              <DetailRow label="Intervento provinciale" value={data.opn} />
+              <DetailRow label="Richiedente" value={data.caller} />
+              <DetailRow label="Indirizzo" value={data.address} />
+              <DetailRow label="Comune" value={data.loc} />
               <DetailRow label="Chiamata" value={data.dt_exit} />
               <DetailRow label="Chiusura" value={data.dt_close} />
               <DetailRow label="Durata" value={`${duration.hours}h ${duration.minutes}m`} />
-              <DetailRow label="Luogo" value={data.loc} />
               <DetailRow label="Capo partenza" value={data.boss} />
-              <DetailRow label="Intervento provinciale" value={data.opn} />
+              <DetailRow label="Operatore" value={data.operator} />
             </div>
 
             {/* Right — vehicle dispatches */}

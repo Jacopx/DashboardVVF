@@ -19,7 +19,7 @@ export default function Charts() {
 
   return (
     <div className="px-8 pt-4 pb-8 space-y-8">
-      <h1 className="text-3xl font-bold">Charts</h1>
+      <h1 className="text-3xl font-bold">Grafici</h1>
       <YearMonthTable data={data} />
       <DayOfYearHeatmap data={data} />
       <ActivityHeatmaps data={data} />

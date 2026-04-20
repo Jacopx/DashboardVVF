@@ -17,7 +17,7 @@ export default function Operations() {
 
 return (
   <div className="p-1">
-    <h1 className="text-3xl font-bold mb-6">Operations</h1>
+    <h1 className="text-3xl font-bold mb-6">Interventi</h1>
     <div className="flex gap-6">
       <div className={selectedOperation ? 'w-3/5' : 'w-full'}>
         <OperationsTable

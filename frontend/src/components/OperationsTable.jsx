@@ -46,7 +46,7 @@ const columns = [
     },
     size: 50
   },
-  { accessorKey: 'loc', header: 'Luogo', size: 150 },
+  { accessorKey: 'loc', header: 'Comune', size: 150 },
   { accessorKey: 'boss', header: 'Capo Partenza', size: 100 },
 ]
 
@@ -56,13 +56,14 @@ export default function OperationsTable({ data, onRowClick, hideInput = false })
 
   const years = useMemo(() => {
     const unique = [...new Set(data.map(op => op.year))].sort().reverse()
-    return ['All', ...unique]
+    return ['Tutti', ...unique]
   }, [data])
 
-  const [selectedYear, setSelectedYear] = useState('All')
+  const currentYear = new Date().getFullYear().toString()
+  const [selectedYear, setSelectedYear] = useState(currentYear)
 
   const filteredData = useMemo(() => {
-    if (selectedYear === 'All') return data
+    if (selectedYear === 'Tutti') return data
     return data.filter(op => op.year === selectedYear)
   }, [data, selectedYear])
 
@@ -81,7 +82,7 @@ export default function OperationsTable({ data, onRowClick, hideInput = false })
     <div className="space-y-4">
       <div className="flex gap-4 items-center">
         {!hideInput && (<Input
-          placeholder="Search anything..."
+          placeholder="Ricerca..."
           value={globalFilter}
           onChange={e => setGlobalFilter(e.target.value)}
           className="max-w-sm"
@@ -138,7 +139,7 @@ export default function OperationsTable({ data, onRowClick, hideInput = false })
         </Table>
       </div>
       <p className="text-sm text-muted-foreground">
-        {table.getFilteredRowModel().rows.length} of {data.length} operations
+        {table.getFilteredRowModel().rows.length} di {data.length} interventi
       </p>
     </div>
   )

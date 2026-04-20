@@ -28,6 +28,9 @@ class OperationOut(BaseModel):
     y:        Optional[str]
     loc:      Optional[str]
     boss:     Optional[str]
+    address:  Optional[str]
+    caller:   Optional[str]
+    operator: Optional[str]
 
     model_config = {"from_attributes": True}
 

@@ -18,8 +18,8 @@ import { fetchLastUpdate } from '@/api/operations'
 
 const items = [
   { title: 'Dashboard', url: '/', icon: LayoutDashboard },
-  { title: 'Operations', url: '/operations', icon: List },
-  { title: 'Charts', url: '/charts', icon: BarChart2 },
+  { title: 'Interventi', url: '/operations', icon: List },
+  { title: 'Grafici', url: '/charts', icon: BarChart2 },
 ]
 
 export default function AppSidebar() {
@@ -61,7 +61,7 @@ export default function AppSidebar() {
         <div className="group-data-[collapsible=icon]:hidden space-y-2 text-xs text-muted-foreground">
           <div className="flex items-center justify-between">
             <span>Update: {lastUpdate?.last_update ?? '—'}</span>
-            <span>v1.1.0</span>
+            <span>v1.2.0</span>
           </div>
 
           <a
