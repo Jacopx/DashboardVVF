@@ -35,6 +35,24 @@ class OperationOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class StaffOut(BaseModel):
+    id:          int
+    name:        Optional[str]
+    surname:     Optional[str]
+    role:        Optional[str]
+    radio:       Optional[int]
+    birthday:    Optional[date]
+    start:       Optional[date]
+    license:     Optional[int]
+    license_exp: Optional[date]
+    medical:     Optional[date]
+    address:     Optional[str]
+    weekend_shift: Optional[int]
+    week_shift:    Optional[int]
+
+    model_config = {"from_attributes": True}
+
+
 class OperationDetailOut(OperationOut):
     """Single operation enriched with its vehicle dispatches."""
     starts: list[StartOut] = []
