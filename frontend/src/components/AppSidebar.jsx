@@ -20,6 +20,7 @@ const items = [
   { title: 'Dashboard', url: '/', icon: LayoutDashboard },
   { title: 'Interventi', url: '/operations', icon: List },
   { title: 'Grafici', url: '/charts', icon: BarChart2 },
+  { title: 'Personale', url: '/staff', icon: Github },
 ]
 
 export default function AppSidebar() {

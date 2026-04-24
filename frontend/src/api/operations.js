@@ -39,16 +39,16 @@ export async function fetchStarts(year) {
 
 export async function fetchAllOperations() {
   const response = await fetch('/api/operations?limit=50000')
-  
+
   if (!response.ok) throw new Error('Failed to fetch all operations')
-  
+
   return response.json()
 }
 
 export async function fetchLastUpdate() {
   const response = await fetch('/api/operations/last-update')
-  
+
   if (!response.ok) throw new Error('Failed to fetch last update')
-  
+
   return response.json()
 }
