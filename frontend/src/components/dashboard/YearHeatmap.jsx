@@ -9,9 +9,9 @@ const AXIS_GAP = 6
 const LABEL_ROW_HEIGHT = 16
 const GRID_PAD = 6
 
-const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const MONTH_LABELS = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu',
+    'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic']
+const DAY_LABELS = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom']
 const COLORS = ['#1a1a1a', '#450a0a', '#7f1d1d', '#ef4444']
 
 // Returns 0=Mon … 6=Sun for a LOCAL date
