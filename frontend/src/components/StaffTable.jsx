@@ -25,7 +25,7 @@ const columns = [
   { accessorKey: 'name', header: 'Nome', size: 100 },
   { accessorKey: 'radio', header: 'Radio', size: 2 },
   { accessorKey: 'license', header: 'Patente', size: 2 },
-  { accessorKey: 'status', header: 'Stato', size: 2 },
+  { accessorKey: 'status_label', header: 'Stato', size: 2 },
 ]
 
 export default function StaffTable({ data, onRowClick }) {
@@ -55,8 +55,8 @@ export default function StaffTable({ data, onRowClick }) {
   }
 
   const filteredData = useMemo(() => {
-    if (viewMode === 'ritirati') return data.filter(s => s.status === 'RITIRATO')
-    return data.filter(s => s.status !== 'RITIRATO')
+    if (viewMode === 'ritirati') return data.filter(s => s.status_label === 'RITIRATO')
+    return data.filter(s => s.status_label !== 'RITIRATO')
   }, [data, viewMode])
 
   const table = useReactTable({

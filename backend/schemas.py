@@ -40,7 +40,7 @@ class StaffOut(BaseModel):
     name:        Optional[str]
     surname:     Optional[str]
     role:        Optional[str]
-    status:      Optional[str]
+    status_label:      Optional[str]
     photo:       Optional[str]
     phone:       Optional[str]
     radio:       Optional[int]

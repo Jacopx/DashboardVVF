@@ -17,7 +17,7 @@ async def get_staff(db: AsyncSession = Depends(get_db)):
     Return staff list.
     """
     
-    stmt = select(Staff).order_by(Staff.status, Staff.role, Staff.surname, Staff.name)
+    stmt = select(Staff).order_by(Staff.status_label, Staff.role, Staff.surname, Staff.name)
     result = await db.execute(stmt)
     
     return result.scalars().all()

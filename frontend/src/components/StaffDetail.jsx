@@ -35,9 +35,9 @@ export default function StaffDetail({ staff, onClose }) {
                             {staff?.role} · Radio {staff?.radio}
                         </p>
                     </div>
-                    <div className="flex items-center gap-3">
-                        <span className={`text-sm font-semibold px-3 py-1 rounded-full ${isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                            {staff?.status ?? 'ATTIVO'}
+                    <div className="flex items-center gap-6">
+                        <span className={`text-sm font-semibold px-9 py-1 rounded-full ${isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                            {staff?.status_label ?? 'ATTIVO'}
                         </span>
                     </div>
                 </div>
@@ -53,30 +53,30 @@ export default function StaffDetail({ staff, onClose }) {
                 <div>
                     <p className="text-s font-semibold text-muted-foreground uppercase tracking-wide py-2">Personale</p>
                     <DetailRow label="Data di Nascita" value={staff?.birthday} />
-                    <DetailRow label="Indirizzo"       value={staff?.address} />
-                    <DetailRow label="Cellulare"       value={staff?.phone} />
+                    <DetailRow label="Indirizzo" value={staff?.address} />
+                    <DetailRow label="Cellulare" value={staff?.phone} />
                 </div>
 
                 {/* Top Right — Patente */}
                 <div>
                     <p className="text-s font-semibold text-muted-foreground uppercase tracking-wide py-2">Patente</p>
-                    <DetailRow label="Grado"    value={staff?.license ? `${staff.license}° grado` : '—'} />
+                    <DetailRow label="Grado" value={staff?.license ? `${staff.license}° grado` : '—'} />
                     <DetailRow label="Scadenza" value={staff?.license_exp} />
                 </div>
 
                 {/* Bottom Left — Servizio */}
                 <div>
                     <p className="text-s font-semibold text-muted-foreground uppercase tracking-wide py-2 mt-2">Servizio</p>
-                    <DetailRow label="Inizio Servizio"    value={staff?.start} />
-                    <DetailRow label="Settimana"  value={staff?.week_shift} />
-                    <DetailRow label="Weekend"      value={staff?.weekend_shift} />
+                    <DetailRow label="Inizio Servizio" value={staff?.start} />
+                    <DetailRow label="Settimana" value={staff?.week_shift} />
+                    <DetailRow label="Weekend" value={staff?.weekend_shift} />
                 </div>
 
                 {/* Bottom Right — Visita Medica */}
                 <div>
                     <p className="text-s font-semibold text-muted-foreground uppercase tracking-wide py-2 mt-2">Visita Medica</p>
                     <DetailRow label="Effettuata" value={staff?.medical} />
-                    <DetailRow label="Scadenza"   value={staff?.medical_exp} />
+                    <DetailRow label="Scadenza" value={staff?.medical_exp} />
                 </div>
 
             </div>

@@ -41,7 +41,7 @@ class Staff(Base):
     name        = Column("name",         String(100))
     surname     = Column("surname",      String(100))
     role        = Column("role",         String(4))
-    status  = Column("status_label",       String(8))
+    status_label  = Column("status_label",       String(8))
     photo       = Column("photo",        String(255))
     phone       = Column("phone",        String(20))
     radio       = Column("radio",        Integer)
