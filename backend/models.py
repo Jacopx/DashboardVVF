@@ -35,18 +35,22 @@ class Start(Base):
 
 
 class Staff(Base):
-    __tablename__ = "staff"
+    __tablename__ = "staffExp"
 
     id          = Column("ID",           Integer,     primary_key=True)
     name        = Column("name",         String(100))
     surname     = Column("surname",      String(100))
     role        = Column("role",         String(4))
+    status  = Column("status_label",       String(8))
+    photo       = Column("photo",        String(255))
+    phone       = Column("phone",        String(20))
     radio       = Column("radio",        Integer)
     birthday    = Column("birthday",     Date)
     start       = Column("start",        Date)
     license     = Column("license",      Integer)
     license_exp = Column("license_exp",  Date)
     medical     = Column("medical",      Date)
+    medical_exp = Column("medical_exp",  Date)
     address     = Column("address",      String(255))
-    weekend_shift = Column("weekend_shift", Integer)
-    week_shift    = Column("week_shift",    Integer)
+    weekend_shift = Column("weekend_shift_members", String(255))
+    week_shift    = Column("week_shift_members",    String(255))

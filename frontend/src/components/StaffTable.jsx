@@ -20,11 +20,12 @@ import {
 import { Input } from '@/components/ui/input'
 
 const columns = [
-  { accessorKey: 'radio', header: 'Radio', size: 2 },
   { accessorKey: 'role', header: 'Ruolo', size: 4 },
   { accessorKey: 'surname', header: 'Cognome', size: 100 },
   { accessorKey: 'name', header: 'Nome', size: 100 },
+  { accessorKey: 'radio', header: 'Radio', size: 2 },
   { accessorKey: 'license', header: 'Patente', size: 2 },
+  { accessorKey: 'status', header: 'Stato', size: 2 },
 ]
 
 export default function StaffTable({ data, onRowClick }) {

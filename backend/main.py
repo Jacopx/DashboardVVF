@@ -6,7 +6,7 @@ from routers import operations, staff
 app = FastAPI(
     title="VVF Ponzone Dashboard API",
     description="Read-only API for VVF Ponzone operations dashboard.",
-    version="0.1.0",
+    version="0.1.1",
     redirect_slashes=False,
 )
 

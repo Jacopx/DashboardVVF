@@ -40,15 +40,19 @@ class StaffOut(BaseModel):
     name:        Optional[str]
     surname:     Optional[str]
     role:        Optional[str]
+    status:      Optional[str]
+    photo:       Optional[str]
+    phone:       Optional[str]
     radio:       Optional[int]
     birthday:    Optional[date]
     start:       Optional[date]
     license:     Optional[int]
     license_exp: Optional[date]
     medical:     Optional[date]
+    medical_exp: Optional[date]
     address:     Optional[str]
-    weekend_shift: Optional[int]
-    week_shift:    Optional[int]
+    weekend_shift: Optional[str]
+    week_shift:    Optional[str]
 
     model_config = {"from_attributes": True}
 
