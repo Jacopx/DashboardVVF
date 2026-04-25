@@ -115,3 +115,25 @@ CREATE TABLE
         limitations varchar(255),
         PRIMARY KEY (plate)
     );
+
+create view shift_members as
+select 'week'                             AS `shift_type`,
+       `VVF_Trivero`.`staff`.`week_shift` AS `shift_name`,
+       `VVF_Trivero`.`staff`.`ID`         AS `ID`,
+       `VVF_Trivero`.`staff`.`name`       AS `name`,
+       `VVF_Trivero`.`staff`.`surname`    AS `surname`,
+       `VVF_Trivero`.`staff`.`role`       AS `role`,
+       `VVF_Trivero`.`staff`.`license`    AS `license`
+from `VVF_Trivero`.`staff`
+where `VVF_Trivero`.`staff`.`week_shift` is not null
+union all
+select 'weekend'                             AS `shift_type`,
+       `VVF_Trivero`.`staff`.`weekend_shift` AS `shift_name`,
+       `VVF_Trivero`.`staff`.`ID`            AS `ID`,
+       `VVF_Trivero`.`staff`.`name`          AS `name`,
+       `VVF_Trivero`.`staff`.`surname`       AS `surname`,
+       `VVF_Trivero`.`staff`.`role`          AS `role`,
+       `VVF_Trivero`.`staff`.`license`       AS `license`
+from `VVF_Trivero`.`staff`
+where `VVF_Trivero`.`staff`.`weekend_shift` is not null;
+

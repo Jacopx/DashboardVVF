@@ -1,4 +1,4 @@
-import { Flame, LayoutDashboard, List, BarChart2, Github, Car } from 'lucide-react'
+import { Flame, LayoutDashboard, List, BarChart2, Github, Car, RotateCw, RotateCcwSquare } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import {
   Sidebar,
@@ -22,6 +22,7 @@ const items = [
   { title: 'Grafici', url: '/charts', icon: BarChart2 },
   { title: 'Personale', url: '/staff', icon: Github },
   { title: 'Mezzi', url: '/vehicles', icon: Car },
+  { title: 'Turni', url: '/shifts', icon: RotateCcwSquare },
 ]
 
 export default function AppSidebar() {
@@ -63,7 +64,7 @@ export default function AppSidebar() {
         <div className="group-data-[collapsible=icon]:hidden space-y-2 text-xs text-muted-foreground">
           <div className="flex items-center justify-between">
             <span>Update: {lastUpdate?.last_update ?? '—'}</span>
-            <span>v1.4.0</span>
+            <span>v1.5.0</span>
           </div>
 
           <a
