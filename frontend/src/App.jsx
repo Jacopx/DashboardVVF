@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard'
 import Operations from './pages/Operations'
 import Charts from './pages/Charts'
 import Staff from './pages/Staff'
+import Vehicles from './pages/Vehicles'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/operations"  element={<Operations />} />
           <Route path="/charts"      element={<Charts />} />
           <Route path="/staff"      element={<Staff />} />
+          <Route path="/vehicles"    element={<Vehicles />} />
         </Routes>
       </main>
     </SidebarProvider>
