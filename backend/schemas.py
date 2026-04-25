@@ -62,6 +62,8 @@ class StaffOut(BaseModel):
 class VehicleOut(BaseModel):
     plate:        str
     name:         Optional[str]
+    brand:        Optional[str]
+    model:        Optional[str]
     type:         Optional[str]
     status_label:  Optional[str]
     photo:        Optional[str]
