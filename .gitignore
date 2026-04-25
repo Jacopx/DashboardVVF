@@ -9,3 +9,4 @@ __pycache__/
 .DS_Store
 backend/sql/data.sql
 backend/sql/*.csv
+.idea/

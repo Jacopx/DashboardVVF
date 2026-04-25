@@ -3,7 +3,7 @@ from database import Base
 
 
 class Operation(Base):
-    __tablename__ = "Operations"
+    __tablename__ = "operations"
 
     id = Column("ID", Integer, primary_key=True)
     year = Column("year", String(4), primary_key=True)
@@ -22,7 +22,7 @@ class Operation(Base):
 
 
 class Start(Base):
-    __tablename__ = "Starts"
+    __tablename__ = "starts"
 
     op_id = Column("OpID", Integer, primary_key=True)
     id = Column("ID", Integer, primary_key=True)
