@@ -56,6 +56,7 @@ export default function StaffTable({ data, onRowClick }) {
 
   const filteredData = useMemo(() => {
     if (viewMode === 'ritirati') return data.filter(s => s.status_label === 'RITIRATO')
+    if (viewMode === 'radio') return data.filter(s => s.radio > 0)
     return data.filter(s => s.status_label !== 'RITIRATO')
   }, [data, viewMode])
 
