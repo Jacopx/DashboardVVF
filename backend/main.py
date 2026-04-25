@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import operations, staff
+from routers import operations, staff, vehicles
 
 app = FastAPI(
     title="VVF Ponzone Dashboard API",
     description="Read-only API for VVF Ponzone operations dashboard.",
-    version="0.1.1",
+    version="0.1.2",
     redirect_slashes=False,
 )
 
@@ -26,7 +26,7 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 app.include_router(operations.router)
 app.include_router(staff.router)
-
+app.include_router(vehicles.router)
 # ---------------------------------------------------------------------------
 # Health check
 # ---------------------------------------------------------------------------

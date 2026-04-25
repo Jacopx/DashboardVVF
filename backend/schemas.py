@@ -2,6 +2,8 @@ from pydantic import BaseModel
 from datetime import date, datetime
 from typing import Optional
 
+from sqlalchemy import Column, Integer
+
 
 class StartOut(BaseModel):
     op_id:      int
@@ -53,6 +55,22 @@ class StaffOut(BaseModel):
     address:     Optional[str]
     weekend_shift: Optional[str]
     week_shift:    Optional[str]
+
+    model_config = {"from_attributes": True}
+
+
+class VehicleOut(BaseModel):
+    plate:        str
+    name:         Optional[str]
+    type:         Optional[str]
+    status_label:  Optional[str]
+    photo:        Optional[str]
+    weight:       Optional[int]
+    description:   Optional[str]
+    data_reg:     Optional[date]
+    data_acquire: Optional[date]
+    seats:        Optional[int]
+    limitations:   Optional[str]
 
     model_config = {"from_attributes": True}
 
