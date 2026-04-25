@@ -14,7 +14,13 @@ export default function StaffDetail({ staff, onClose }) {
         ? staff.photo
         : `${DEFAULT_PHOTO}${encodeURIComponent(staff?.name + ' ' + staff?.surname)}`
 
-    const isActive = staff?.status_label === 'ATTIVO' || staff?.status_label === 'RITIRATO'
+    const statusColor = {
+        'ATTIVO': 'bg-green-900/40 text-green-400',
+        'PERMANENTE': 'bg-orange-900/40 text-orange-400',
+        'RITIRATO': 'bg-red-900/40 text-red-400',
+    }
+
+    const badgeClass = statusColor[staff?.status_label] ?? statusColor['ATTIVO']
 
     return (
         <div className="rounded-md border overflow-y-auto mt-12 max-h-screen">
@@ -36,7 +42,7 @@ export default function StaffDetail({ staff, onClose }) {
                         </p>
                     </div>
                     <div className="flex items-center gap-6">
-                        <span className={`text-sm font-semibold px-9 py-1 rounded-full ${isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        <span className={`text-sm font-semibold px-3 py-1 rounded-full ${badgeClass}`}>
                             {staff?.status_label ?? 'ATTIVO'}
                         </span>
                     </div>

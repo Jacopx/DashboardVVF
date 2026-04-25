@@ -55,9 +55,9 @@ export default function StaffTable({ data, onRowClick }) {
   }
 
   const filteredData = useMemo(() => {
-    if (viewMode === 'ritirati') return data.filter(s => s.status_label === 'RITIRATO')
+    if (viewMode === 'ritirati') return data.filter(s => s.status_label === 'RITIRATO' || s.status_label === 'PERMANENTE')
     if (viewMode === 'radio') return data.filter(s => s.radio > 0)
-    return data.filter(s => s.status_label !== 'RITIRATO')
+    return data.filter(s => s.status_label === 'ATTIVO')
   }, [data, viewMode])
 
   const table = useReactTable({
@@ -130,7 +130,7 @@ export default function StaffTable({ data, onRowClick }) {
             : 'bg-background text-muted-foreground border-border hover:bg-muted'
             }`}
         >
-          Ritirati
+          Altro personale
         </button>
       </div>
       <div className="rounded-md border">
