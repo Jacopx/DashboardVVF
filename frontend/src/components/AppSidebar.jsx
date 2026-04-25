@@ -1,4 +1,4 @@
-import { Flame, LayoutDashboard, List, BarChart2, Github, Car, RotateCw, RotateCcwSquare } from 'lucide-react'
+import { Flame, LayoutDashboard, List, BarChart2, Github, Car, RotateCw, RotateCcwSquare, Calendar } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import {
   Sidebar,
@@ -23,6 +23,7 @@ const items = [
   { title: 'Personale', url: '/staff', icon: Github },
   { title: 'Mezzi', url: '/vehicles', icon: Car },
   { title: 'Turni', url: '/shifts', icon: RotateCcwSquare },
+  { title: 'Calendario', url: '/calendar', icon: Calendar },
 ]
 
 export default function AppSidebar() {

@@ -27,9 +27,9 @@ def get_weekend_shifts(year: int) -> list[dict]:
         sunday = d + timedelta(days=1)
 
         if weekend_index % 2 == 0:
-            sat_shift, sun_shift = 1, 2
+            sat_shift, sun_shift = 4, 3
         else:
-            sat_shift, sun_shift = 3, 4
+            sat_shift, sun_shift = 1, 2
 
         result.append({"date": saturday, "day": "sabato",   "shift": sat_shift})
         if sunday.year == year:
