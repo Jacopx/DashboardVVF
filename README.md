@@ -1,16 +1,13 @@
 # DashboardVVF 🚒
 
-A web-based analytics dashboard for firefighters club operations.
+A web-based analytics dashboard for firefighter club operations.
 Built to visualize and explore intervention data stored in a MariaDB database.
 
 ---
 
 ## Architecture
 
-The system follows a **thin server, rich client** approach:
-
-- The backend is a **read-only API** — it fetches data from MariaDB and returns JSON, nothing more
-- The frontend handles all **computation, filtering, and chart rendering** client-side using DuckDB-WASM
+**Thin server, rich client** — the backend is a read-only JSON API; all computation, filtering, and rendering happens in the browser.
 
 ```
 MariaDB → FastAPI (Python) → React + DuckDB-WASM (Browser)
@@ -26,7 +23,7 @@ MariaDB → FastAPI (Python) → React + DuckDB-WASM (Browser)
 - **aiomysql** — async MariaDB driver
 - **Uvicorn** — ASGI server
 
-### Frontend _(coming)_
+### Frontend
 - **React + Vite** — UI framework and build tool
 - **DuckDB-WASM** — in-browser SQL engine for client-side computation
 - **TanStack Query** — data fetching and caching
@@ -38,9 +35,10 @@ MariaDB → FastAPI (Python) → React + DuckDB-WASM (Browser)
 
 ## Database Schema
 
-Two tables, read-only access:
+Four tables, read-only access:
 
 **`Operations`** — one row per intervention
+
 | Column | Type | Description |
 |---|---|---|
 | ID | int | Operation ID (resets each year) |
@@ -53,8 +51,12 @@ Two tables, read-only access:
 | x, y | varchar(255) | Geographic coordinates |
 | loc | varchar(255) | Location description |
 | boss | varchar(255) | Officer in charge |
+| address | varchar(255) | Intervention address |
+| caller | varchar(255) | Who placed the call |
+| operator | varchar(255) | Operator who received the call |
 
 **`Starts`** — one row per vehicle dispatched within an operation
+
 | Column | Type | Description |
 |---|---|---|
 | OpID | int | Reference to Operations.ID |
@@ -66,65 +68,80 @@ Two tables, read-only access:
 | back_dt | datetime | When it returned to station |
 | boss | varchar(255) | Vehicle crew leader |
 
+**`staffExp`** — personnel registry
+
+| Column | Type | Description |
+|---|---|---|
+| ID | int | Staff member ID |
+| name / surname | varchar | Full name |
+| role | varchar(4) | Role code (e.g. `CSV`) |
+| status_label | varchar(8) | `ATTIVO`, `RITIRATO`, … |
+| photo | varchar | Photo URL |
+| phone | varchar | Mobile number |
+| radio | int | Radio number |
+| birthday / start | date | Date of birth / start of service |
+| license / license_exp | int / date | Driving licence grade and expiry |
+| medical / medical_exp | date | Medical visit date and expiry |
+| address | varchar | Home address |
+| week_shift / weekend_shift | varchar | Shift assignments |
+
+**`vehiclesExp`** — vehicle registry
+
+| Column | Type | Description |
+|---|---|---|
+| plate | varchar(9) | Primary key — licence plate |
+| name / type | varchar | Display name and vehicle type |
+| status_label | varchar(8) | Operational status |
+| photo | varchar | Photo URL |
+| weight | int | Vehicle weight (kg) |
+| seats | int | Passenger capacity |
+| data_reg / data_acquire | date | Registration and acquisition dates |
+| limitations / description | varchar | Notes and restrictions |
+
+> The composite primary key `(ID, year)` on `Operations` means IDs reset each year — all endpoints reflect this.
+
 ---
 
 ## Project Structure
 
 ```
 DashboardVVF/
-├── main.py            # FastAPI app, CORS, router registration
-├── database.py        # DB connection, session factory
-├── models.py          # SQLAlchemy table definitions
-├── schemas.py         # Pydantic response schemas
+├── main.py                  # FastAPI app, CORS, router registration
+├── database.py              # DB connection, session factory
+├── models.py                # SQLAlchemy table definitions
+├── schemas.py               # Pydantic response schemas
 ├── routers/
 │   ├── __init__.py
-│   └── operations.py  # All operation endpoints
+│   ├── operations.py
+│   ├── vehicles.py
+│   └── staff.py
 ├── requirements.txt
-├── .env               # DB credentials (never commit this)
-└── .env.example       # Credentials template
+├── .env                     # DB credentials (never commit this)
+└── .env.example             # Credentials template
+```
+
+Frontend components follow a consistent pattern per entity:
+
+```
+<Entity>.jsx          # Page: fetches data, holds selected-row state
+<EntityTable>.jsx     # TanStack Table with filters and view modes
+<EntityDetail>.jsx    # Side panel shown when a row is selected
 ```
 
 ---
 
 ## Getting Started
 
-### 1. Clone and set up the environment
-
 ```bash
 git clone https://github.com/youruser/DashboardVVF.git
 cd DashboardVVF
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-```
-
-### 2. Configure the database
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env` with your MariaDB credentials:
-
-```
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=your_user
-DB_PASSWORD=your_password
-DB_NAME=your_database
-```
-
-> It is recommended to create a dedicated **read-only** MariaDB user for this app.
-
-### 3. Run the backend
-
-```bash
+cp .env.example .env   # fill in your DB credentials
 uvicorn main:app --reload --port 8000
 ```
 
-### 4. Explore the API
-
-Open [http://localhost:8000/docs](http://localhost:8000/docs) for the interactive API docs.
+Open [http://localhost:8000/docs](http://localhost:8000/docs) for Swagger UI.
 
 ---
 
@@ -134,39 +151,39 @@ Open [http://localhost:8000/docs](http://localhost:8000/docs) for the interactiv
 |---|---|---|
 | GET | `/api/health` | Health check |
 | GET | `/api/operations` | List operations (filterable) |
-| GET | `/api/operations/{year}/full` | All operations for a year with vehicle dispatches |
-| GET | `/api/operations/{year}/{id}` | Single operation with vehicle dispatches |
+| GET | `/api/operations/{year}/full` | All operations for a year with dispatches |
+| GET | `/api/operations/{year}/{id}` | Single operation with dispatches |
+| GET | `/api/vehicles` | List all vehicles |
+| GET | `/api/staff` | List all staff members |
 
-### Query parameters for `GET /api/operations`
+### Query parameters — `GET /api/operations`
 
 | Parameter | Type | Description |
 |---|---|---|
-| year | string | Filter by year e.g. `2024` |
-| typology | string | Partial match on typology |
-| boss | string | Partial match on boss name |
-| date_from | string | Start date `YYYY-MM-DD` |
-| date_to | string | End date `YYYY-MM-DD` |
-| limit | int | Max rows returned (default 1000, max 5000) |
+| year | string | e.g. `2024` |
+| typology | string | Partial match |
+| boss | string | Partial match |
+| date_from / date_to | string | `YYYY-MM-DD` range |
+| limit | int | Default 1000, max 5000 |
 | offset | int | Pagination offset |
 
 ---
 
-## Computed Metrics (client-side)
+## Computed Metrics (client-side, via DuckDB-WASM)
 
-Once data is loaded into DuckDB-WASM, the frontend can derive:
-
-- **Response time** — `dt_exit - date`
-- **Travel time** — `inplace_dt - exit_dt` per vehicle
-- **Operation duration** — `dt_close - date`
-- **Time on scene** — `back_dt - inplace_dt` per vehicle
-- **Operations by typology, month, year**
-- **Most dispatched vehicles**
-- **Geographic map** from `x`, `y` coordinates
+| Metric | Derivation |
+|---|---|
+| Response time | `dt_exit − date` |
+| Travel time | `inplace_dt − exit_dt` per vehicle |
+| Operation duration | `dt_close − date` |
+| Time on scene | `back_dt − inplace_dt` per vehicle |
+| Operations by typology / month / year | aggregation on `Operations` |
+| Most dispatched vehicles | aggregation on `Starts` |
+| Geographic map | from `x`, `y` coordinates |
 
 ---
 
 ## Notes
 
-- The database is **written by a separate system** — this app is strictly read-only
-- All heavy computation happens **in the browser**, keeping the server lightweight
-- The composite primary key `(ID, year)` on Operations means IDs reset each year — all endpoints reflect this
+- The database is **written by a separate system** — this app is strictly read-only.
+- All heavy computation happens **in the browser**, keeping the server stateless and lightweight.
