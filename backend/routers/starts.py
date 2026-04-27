@@ -24,7 +24,7 @@ async def get_starts(db: AsyncSession = Depends(get_db), limit: int = Query(1000
 @router.get("/{year}/{OpID}", response_model=list[StartOut])
 async def get_start(db: AsyncSession = Depends(get_db), year: int = None, OpID: int = None):
     """
-    Return a specific start.
+    Return all the starts for a given year and operation ID.
     """
     
     stmt = select(Start).where(Start.year == year, Start.op_id == OpID)
