@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 const DEFAULT_PHOTO = 'https://ui-avatars.com/api/?background=e2e8f0&color=64748b&size=128&name='
 
 function DetailRow({ label, value }) {
@@ -9,12 +11,17 @@ function DetailRow({ label, value }) {
     )
 }
 
-export default function VehicleDetail({ vehicle, onClose }) {
+export default function VehicleDetail({ starts, vehicle, onClose }) {
     const photoUrl = vehicle?.photo
         ? vehicle.photo
         : `${DEFAULT_PHOTO}${encodeURIComponent(vehicle?.name)}`
 
     const isActive = vehicle?.status_label === 'ATTIVO'
+
+    const countVehicleStarts = useMemo(() => {
+        if (!starts || !vehicle) return 0
+        return starts.filter(s => s.vehicle === vehicle.name).length
+    }, [starts, vehicle])
 
     return (
         <div className="rounded-md border overflow-y-auto mt-12 max-h-screen">
@@ -35,6 +42,9 @@ export default function VehicleDetail({ vehicle, onClose }) {
                             {vehicle?.brand} {vehicle?.model} · {vehicle?.type}
                         </p>
                     </div>
+                    <span className="text-sm font-semibold px-3 py-1 rounded-full bg-blue-900/40 text-blue-400">
+                        Interventi: {countVehicleStarts}
+                    </span>
                     <span className={`text-sm font-semibold px-9 py-1 rounded-full ${isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                         }`}>
                         {vehicle?.status_label}

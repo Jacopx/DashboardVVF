@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 const DEFAULT_PHOTO = 'https://ui-avatars.com/api/?background=e2e8f0&color=64748b&size=128&name='
 
 function DetailRow({ label, value }) {
@@ -9,7 +11,7 @@ function DetailRow({ label, value }) {
     )
 }
 
-export default function StaffDetail({ staff, onClose }) {
+export default function StaffDetail({ starts, staff, onClose }) {
     const photoUrl = staff?.photo
         ? staff.photo
         : `${DEFAULT_PHOTO}${encodeURIComponent(staff?.name + ' ' + staff?.surname)}`
@@ -21,6 +23,12 @@ export default function StaffDetail({ staff, onClose }) {
     }
 
     const badgeClass = statusColor[staff?.status_label] ?? statusColor['ATTIVO']
+
+    const countBossStarts = useMemo(() => {
+        if (!starts || !staff) return 0
+        const bossKey = `${staff?.surname.toUpperCase()} ${staff?.name.slice(0, 3).toUpperCase()}.`
+        return starts.filter(s => s.boss === bossKey).length
+    }, [starts, staff])
 
     return (
         <div className="rounded-md border overflow-y-auto mt-12 max-h-screen">
@@ -41,6 +49,9 @@ export default function StaffDetail({ staff, onClose }) {
                             {staff?.role} · Radio {staff?.radio}
                         </p>
                     </div>
+                    <span className="text-sm font-semibold px-3 py-1 rounded-full bg-blue-900/40 text-blue-400">
+                        CP: {countBossStarts} interventi 
+                    </span>
                     <div className="flex items-center gap-6">
                         <span className={`text-sm font-semibold px-3 py-1 rounded-full ${badgeClass}`}>
                             {staff?.status_label ?? 'ATTIVO'}

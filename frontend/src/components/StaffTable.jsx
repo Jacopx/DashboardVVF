@@ -130,7 +130,7 @@ export default function StaffTable({ data, onRowClick }) {
             : 'bg-background text-muted-foreground border-border hover:bg-muted'
             }`}
         >
-          Altro personale
+          Altro
         </button>
       </div>
       <div className="rounded-md border">

@@ -1,19 +1,26 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { fetchStaff } from '@/api/staff'
+import { fetchAllStarts } from '@/api/starts'
 import StaffTable from '@/components/StaffTable'
 import StaffDetail from '@/components/StaffDetail'
 
 export default function Staff() {
+
     const [selectedStaff, setSelectedStaff] = useState(null)
 
-    const { data, isLoading, error } = useQuery({
+    const { data: dataStaff, isLoading: isLoadingStaff, error: errorStaff } = useQuery({
         queryKey: ['staff'],
         queryFn: () => fetchStaff(),
     })
 
-    if (isLoading) return <p className="p-8 text-muted-foreground">Loading...</p>
-    if (error) return <p className="p-8 text-destructive">Error: {error.message}</p>
+    const { data: dataStarts, isLoading: isLoadingStarts, error: errorStarts } = useQuery({
+        queryKey: ['starts'],
+        queryFn: () => fetchAllStarts(),
+    })
+
+    if (isLoadingStaff || isLoadingStarts) return <p className="p-8 text-muted-foreground">Loading...</p>
+    if (errorStaff || errorStarts) return <p className="p-8 text-destructive">Error: {errorStaff.message}</p>
 
     return (
         <div className="p-1">
@@ -21,13 +28,14 @@ export default function Staff() {
             <div className="flex gap-6">
                 <div className={selectedStaff ? 'w-1/2' : 'w-full'}>
                     <StaffTable
-                        data={data}
+                        data={dataStaff}
                         onRowClick={setSelectedStaff}
                     />
                 </div>
                 {selectedStaff && (
                     <div className="w-1/2 sticky top-0 self-start">
                         <StaffDetail
+                            starts={dataStarts}
                             staff={selectedStaff}
                             onClose={() => setSelectedStaff(null)}
                         />
