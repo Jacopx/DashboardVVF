@@ -1,4 +1,4 @@
-import { Flame, LayoutDashboard, List, BarChart2, Github, Car, RotateCw, RotateCcwSquare, Calendar } from 'lucide-react'
+import { Flame, LayoutDashboard, List, BarChart2, Github, Car, RotateCcwSquare, Calendar, MapIcon } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import {
   Sidebar,
@@ -19,6 +19,7 @@ import { fetchLastUpdate } from '@/api/operations'
 const items = [
   { title: 'Dashboard', url: '/', icon: LayoutDashboard },
   { title: 'Interventi', url: '/operations', icon: List },
+  { title: 'Mappa', url: '/map', icon: MapIcon },
   { title: 'Grafici', url: '/charts', icon: BarChart2 },
   { title: 'Personale', url: '/staff', icon: Github },
   { title: 'Mezzi', url: '/vehicles', icon: Car },
@@ -65,7 +66,7 @@ export default function AppSidebar() {
         <div className="group-data-[collapsible=icon]:hidden space-y-2 text-xs text-muted-foreground">
           <div className="flex items-center justify-between">
             <span>Update: {lastUpdate?.last_update ?? '—'}</span>
-            <span>v1.5.2</span>
+            <span>v1.5.3</span>
           </div>
 
           <a

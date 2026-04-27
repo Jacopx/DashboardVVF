@@ -128,3 +128,13 @@
     @apply font-sans;
     }
 }
+
+.leaflet-popup-content-wrapper {
+    background: #000000;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.leaflet-popup-tip {
+    background: #000000;
+}
