@@ -16,6 +16,8 @@ const WEEKEND_COLORS = {
     4: 'bg-pink-200 dark:bg-pink-900',
 }
 
+const DAYS = { '1':'Lunedì','2':'Martedì','3':'Mercoledì','4':'Giovedì','5':'Venerdì' }
+
 function Popup({ data, shifts, isWeekend }) {
     const team = shifts?.[isWeekend ? 'weekend' : 'week']?.[
         isWeekend ? String(data.shift) : data.shift_name
@@ -24,7 +26,7 @@ function Popup({ data, shifts, isWeekend }) {
 
     return (
         <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded-md border bg-popover shadow-lg p-3 text-popover-foreground">
-            <p className="text-xs font-bold mb-2">{isWeekend ? `Turno ${data.shift}` : data.shift_name}</p>
+            <p className="text-xs font-bold mb-2">{isWeekend ? `Turno ${data.shift}` : DAYS[data.shift_name]}</p>
             {!!team.capi_partenza?.length && (
                 <div className="mb-1">
                     <div className="flex items-center gap-1"><Shield size={11} className="text-red-600" /><p className="text-xs font-semibold text-red-600 uppercase">Capo</p></div>
