@@ -7,7 +7,7 @@ import StaffDetail from '@/components/StaffDetail'
 
 export default function Staff() {
 
-    const [selectedStaff, setSelectedStaff] = useState(null)
+    const [selectedId, setSelectedId] = useState(null)
 
     const { data: dataStaff, isLoading: isLoadingStaff, error: errorStaff } = useQuery({
         queryKey: ['staff'],
@@ -19,6 +19,8 @@ export default function Staff() {
         queryFn: () => fetchAllStarts(),
     })
 
+    const selectedStaff = selectedId ? dataStaff?.find(s => s.id === selectedId) : null
+
     if (isLoadingStaff || isLoadingStarts) return <p className="p-8 text-muted-foreground">Loading...</p>
     if (errorStaff || errorStarts) return <p className="p-8 text-destructive">Error: {errorStaff.message}</p>
 
@@ -29,7 +31,7 @@ export default function Staff() {
                 <div className={selectedStaff ? 'w-1/2' : 'w-full'}>
                     <StaffTable
                         data={dataStaff}
-                        onRowClick={setSelectedStaff}
+                        onRowClick={s => setSelectedId(s.id)}
                     />
                 </div>
                 {selectedStaff && (
@@ -37,7 +39,7 @@ export default function Staff() {
                         <StaffDetail
                             starts={dataStarts}
                             staff={selectedStaff}
-                            onClose={() => setSelectedStaff(null)}
+                            onClose={() => setSelectedId(null)}
                         />
                     </div>
                 )}

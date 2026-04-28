@@ -68,7 +68,7 @@ export default function AppSidebar() {
         <div className="group-data-[collapsible=icon]:hidden space-y-2 text-xs text-muted-foreground">
           <div className="flex items-center justify-between">
             <span>Update: {lastUpdate?.last_update ?? '—'}</span>
-            <span>v1.5.6</span>
+            <span>v1.6.0</span>
           </div>
 
           <a
