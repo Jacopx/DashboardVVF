@@ -56,6 +56,14 @@ class Staff(Base):
     week_shift = Column("week_shift_members", String(255))
 
 
+class StaffWrite(Base):
+    __tablename__ = "staff"
+    
+    id = Column("ID", Integer, primary_key=True)
+    medical = Column("medical", Date)
+    license_exp = Column("license_exp", Date)
+
+
 class Vehicle(Base):
     __tablename__ = "vehicles"
 

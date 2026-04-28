@@ -1,8 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 from datetime import date, datetime
 from typing import Optional
-
-from sqlalchemy import Column, Integer
 
 
 class StartOut(BaseModel):
@@ -58,6 +56,18 @@ class StaffOut(BaseModel):
 
     model_config = {"from_attributes": True}
 
+class StaffUpdate(BaseModel):
+    medical: date
+    license_exp: date
+    
+    @model_validator(mode='after')
+    def check_dates(self):
+        today = date.today()
+        if self.medical > today:
+            raise ValueError("La data della visita medica non può essere nel futuro")
+        if self.license_exp <= today:
+            raise ValueError("La scadenza della licenza deve essere nel futuro")
+        return self
 
 class VehicleOut(BaseModel):
     plate:        str
