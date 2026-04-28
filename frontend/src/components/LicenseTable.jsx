@@ -23,8 +23,7 @@ const columns = [
     { accessorKey: 'role', header: 'Ruolo', size: 4 },
     { accessorKey: 'surname', header: 'Cognome', size: 100 },
     { accessorKey: 'name', header: 'Nome', size: 100 },
-    { accessorKey: 'medical', header: 'Ultima visita', size: 2 },
-    { accessorKey: 'medical_exp', header: 'Scadenza visita', size: 2 },
+    { accessorKey: 'license_exp', header: 'Scadenza patente', size: 2 },
 ]
 
 export default function StaffTable({ data }) {
@@ -98,7 +97,7 @@ export default function StaffTable({ data }) {
                         {table.getRowModel().rows.map(row => (
                             <TableRow
                                 key={row.id}
-                                className={`cursor-pointer ${getExpiryHighlight(row.original.medical_exp)}`}
+                                className={`cursor-pointer ${getExpiryHighlight(row.original.license_exp)}`}
                                 data-state=""
                             >
                                 {row.getVisibleCells().map(cell => (
