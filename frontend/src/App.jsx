@@ -6,6 +6,7 @@ import Operations from './pages/Operations'
 import Map from './pages/Map'
 import Charts from './pages/Charts'
 import Staff from './pages/Staff'
+import Medical from './pages/Medical'
 import Vehicles from './pages/Vehicles'
 import Shifts from './pages/Shifts'
 import Calendar from './pages/Calendar'
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/map"         element={<Map />} />
           <Route path="/charts"      element={<Charts />} />
           <Route path="/staff"      element={<Staff />} />
+          <Route path="/medical"    element={<Medical />} />
           <Route path="/vehicles"    element={<Vehicles />} />
           <Route path="/shifts"      element={<Shifts />} />
           <Route path="/calendar"    element={<Calendar />} />
