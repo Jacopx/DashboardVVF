@@ -42,7 +42,7 @@ export default function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="p-4 flex flex-row items-center gap-2">
         <Flame className="text-red-500 shrink-0" size={24} />
-        <span className="font-bold text-lg group-data-[collapsible=icon]:hidden">VVF Dashboard</span>
+        <span className="font-bold text-lg group-data-[collapsible=icon]:hidden">VVF Ponzone</span>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
