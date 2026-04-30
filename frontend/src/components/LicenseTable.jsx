@@ -24,6 +24,17 @@ const columns = [
     { accessorKey: 'surname', header: 'Cognome', size: 100 },
     { accessorKey: 'name', header: 'Nome', size: 100 },
     { accessorKey: 'license_exp', header: 'Scadenza patente', size: 2 },
+    {
+        header: 'Giorni rimanenti',
+        accessorFn: row => {
+            if (!row.license_exp) return 'N/A'
+            
+            const diff = new Date(row.license_exp) - new Date()
+
+            return diff > 0 ? Math.ceil(diff / 86400000) : 'SCADUTA'
+        },
+        size: 3
+    },
 ]
 
 export default function StaffTable({ data }) {
@@ -41,9 +52,9 @@ export default function StaffTable({ data }) {
         const days = Math.ceil((exp - today) / 86400000)
 
         if (days < 0) return '!bg-red-600/70 hover:!bg-red-600/90'
-        if (days <= 30) return '!bg-orange-500/70 hover:!bg-orange-500/90'
-        if (days <= 60) return '!bg-yellow-500/70 hover:!bg-yellow-500/90'
-        if (days <= 90) return '!bg-blue-500/70 hover:!bg-blue-500/90'
+        if (days <= 45) return '!bg-orange-500/70 hover:!bg-orange-500/90'
+        if (days <= 90) return '!bg-yellow-500/70 hover:!bg-yellow-500/90'
+        if (days <= 180) return '!bg-blue-500/70 hover:!bg-blue-500/90'
         return 'hover:bg-muted'
     }
 
@@ -69,9 +80,9 @@ export default function StaffTable({ data }) {
                 />)}
             </div>
             <div className="flex gap-3 text-xs">
-                <span className="px-2 py-0.5 rounded bg-blue-500/70">≤ 90 giorni</span>
-                <span className="px-2 py-0.5 rounded bg-yellow-500/70">≤ 60 giorni</span>
-                <span className="px-2 py-0.5 rounded bg-orange-500/70">≤ 30 giorni</span>
+                <span className="px-2 py-0.5 rounded bg-blue-500/70">≤ 180 giorni</span>
+                <span className="px-2 py-0.5 rounded bg-yellow-500/70">≤ 90 giorni</span>
+                <span className="px-2 py-0.5 rounded bg-orange-500/70">≤ 45 giorni</span>
                 <span className="px-2 py-0.5 rounded bg-red-600/70">Scaduta</span>
             </div>
             <div className="rounded-md border">

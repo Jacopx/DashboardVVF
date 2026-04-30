@@ -23,8 +23,20 @@ const columns = [
     { accessorKey: 'role', header: 'Ruolo', size: 4 },
     { accessorKey: 'surname', header: 'Cognome', size: 100 },
     { accessorKey: 'name', header: 'Nome', size: 100 },
+    { accessorKey: 'birthday', header: 'Data nascita', size: 2 },
     { accessorKey: 'medical', header: 'Ultima visita', size: 2 },
     { accessorKey: 'medical_exp', header: 'Scadenza visita', size: 2 },
+    {
+        header: 'Giorni rimanenti',
+        accessorFn: row => {
+            if (!row.medical_exp) return 'N/A'
+            
+            const diff = new Date(row.medical_exp) - new Date()
+
+            return diff > 0 ? Math.ceil(diff / 86400000) : 'SCADUTA'
+        },
+        size: 3
+    },
 ]
 
 export default function StaffTable({ data }) {
