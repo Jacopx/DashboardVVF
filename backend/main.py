@@ -6,7 +6,7 @@ from routers import operations, staff, vehicles, shifts, calendar, starts
 app = FastAPI(
     title="VVF Ponzone Dashboard API",
     description="Read-only API for VVF Ponzone operations dashboard.",
-    version="0.1.4",
+    version="0.1.5",
     redirect_slashes=False,
 )
 

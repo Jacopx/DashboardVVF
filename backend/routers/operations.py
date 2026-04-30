@@ -5,7 +5,7 @@ from typing import Optional
 
 from database import get_db
 from models import Operation, Start
-from schemas import OperationOut, OperationDetailOut
+from schemas import OperationNoteUpdate, OperationOut, OperationDetailOut
 
 
 router = APIRouter(prefix="/api/operations", tags=["operations"])
@@ -120,6 +120,37 @@ async def get_operation_detail(
         **OperationOut.model_validate(operation).model_dump(),
         starts=starts,
     )
+
+
+@router.patch("/{year}/{id}", response_model=OperationOut)
+async def update_operation_note(
+    year: str,
+    id: int,
+    payload: OperationNoteUpdate,
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Update only the note field of an operation.
+    """
+
+    # Fetch the operation
+    result = await db.execute(
+        select(Operation).where(Operation.year == year, Operation.id == id)
+    )
+    operation = result.scalar_one_or_none()
+
+    if not operation:
+        raise HTTPException(status_code=404, detail="Intervento non trovato")
+
+    # Apply update
+    if payload.note is not None:
+        operation.note = payload.note
+
+    # Persist changes
+    await db.commit()
+    await db.refresh(operation)
+
+    return operation
 
 
 @router.get("/last-update")

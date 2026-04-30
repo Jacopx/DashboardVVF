@@ -19,6 +19,7 @@ class Operation(Base):
     address = Column("address", String(255))
     caller = Column("caller", String(255))
     operator = Column("operator", String(255))
+    note = Column("note", String(255))
 
 
 class Start(Base):

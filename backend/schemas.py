@@ -31,8 +31,13 @@ class OperationOut(BaseModel):
     address:  Optional[str]
     caller:   Optional[str]
     operator: Optional[str]
+    note:     Optional[str]
 
     model_config = {"from_attributes": True}
+
+
+class OperationNoteUpdate(BaseModel):
+    note: Optional[str] = None
 
 
 class StaffOut(BaseModel):
