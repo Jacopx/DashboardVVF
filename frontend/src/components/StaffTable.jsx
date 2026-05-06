@@ -24,6 +24,7 @@ const columns = [
   { accessorKey: 'surname', header: 'Cognome', size: 100 },
   { accessorKey: 'name', header: 'Nome', size: 100 },
   { accessorKey: 'radio', header: 'Radio', size: 2 },
+  { accessorKey: 'birthday', header: 'Data nascita', size: 10 },
   { accessorKey: 'license', header: 'Patente', size: 2 },
   { accessorKey: 'status_label', header: 'Stato', size: 2 },
 ]
