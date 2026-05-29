@@ -96,7 +96,7 @@ export default function LocalityTypologyChart({ data }) {
                 </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 min-h-0 p-2">
-                <ReactECharts option={option} style={{ height: '400px' }} opts={{ renderer: 'svg' }} />
+                <ReactECharts option={option} style={{ height: '500px' }} opts={{ renderer: 'svg' }} />
             </CardContent>
         </Card>
     )

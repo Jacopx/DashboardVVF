@@ -24,8 +24,9 @@ function MemberList({ title, icon: Icon, members, titleClass }) {
 
 export default function ShiftCard({ shiftName, members, nextShift, isNext }) {
     const badgeColor = SHIFT_COLORS[shiftName] ?? 'bg-grey-100'
+    const isToday = nextShift && new Date(nextShift.date).toDateString() === new Date().toDateString()
     return (
-        <div className={`rounded-md border p-4 ${isNext ? 'ring-2 ring-red-600' : ''}`}>
+        <div className={`rounded-md border p-4 ${(isNext || isToday) ? 'ring-2 ring-red-600' : ''}`}>
             <div className="flex items-center gap-2 mb-3">
                 <h3 className="text-lg font-bold">{shiftName}</h3>
                 {nextShift && (

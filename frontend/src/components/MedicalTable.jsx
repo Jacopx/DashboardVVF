@@ -44,7 +44,7 @@ export default function StaffTable({ data }) {
     const [sorting, setSorting] = useState([])
 
     const filteredData = useMemo(() => {
-        return data.filter(s => s.status_label === 'ATTIVO')
+        return data.filter(s => s.status_label === 'ATTIVO' || s.status_label === 'PAUSA')
     }, [data])
 
     function getExpiryHighlight(exp_date) {
