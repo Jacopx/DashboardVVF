@@ -38,8 +38,8 @@ export default function MapView({ operations }) {
                             <p style={{ fontSize: '12px', margin: '2px 0' }}>⭐ {op.boss ?? '—'}</p>
                         </div>
                         <div style={{ borderTop: '1px solid #334155', marginTop: '6px', paddingTop: '4px' }}>
-                            <p style={{ fontSize: '12px', margin: '2px 0' }}>🟢 {op.dt_exit ? op.dt_exit.replace('T', ' ').slice(0, 16) : '—'}</p>
-                            <p style={{ fontSize: '12px', margin: '2px 0' }}>🔴 {op.dt_close ? op.dt_close.replace('T', ' ').slice(0, 16) : '—'}</p>
+                            <p style={{ fontSize: '14px', margin: '2px 0' }}>🟢 {op.dt_exit ? op.dt_exit.replace('T', ' ').slice(0, 16) : '—'}</p>
+                            <p style={{ fontSize: '14px', margin: '2px 0' }}>🔴 {op.dt_close ? op.dt_close.replace('T', ' ').slice(0, 16) : '—'}</p>
                         </div>
                     </div>
                 </Popup>
