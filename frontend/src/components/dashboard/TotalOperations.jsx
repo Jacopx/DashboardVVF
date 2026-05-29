@@ -1,12 +1,8 @@
-import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Flame } from 'lucide-react'
 
 export default function TotalOperations({ data }) {
-    const total = useMemo(() => {
-        if (!data.length) return 0
-        return Math.max(...data.map(op => op.id)) + 1
-    }, [data])
+    const total = data.length
 
     return (
         <Card>

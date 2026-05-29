@@ -1,4 +1,4 @@
-import { useState, useMemo, act } from 'react'
+import { useState, useMemo } from 'react'
 
 import {
     useReactTable,

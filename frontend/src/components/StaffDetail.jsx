@@ -16,6 +16,17 @@ function DetailRow({ label, value }) {
     )
 }
 
+function EditableRow({ label, value, onChange }) {
+    return (
+        <div className="flex flex-col gap-1 py-2 border-b border-border">
+            <span className="text-xs text-muted-foreground">{label}</span>
+            <div className="ring-1 ring-primary rounded-md px-2 py-1">
+                <DatePicker value={value} onChange={onChange} />
+            </div>
+        </div>
+    )
+}
+
 export default function StaffDetail({ starts, staff, onClose }) {
 
     const [editing, setEditing] = useState(false)
@@ -65,17 +76,6 @@ export default function StaffDetail({ starts, staff, onClose }) {
         const bossKey = `${staff?.surname.toUpperCase()} ${staff?.name.slice(0, 3).toUpperCase()}.`
         return starts.filter(s => s.boss === bossKey).length
     }, [starts, staff])
-
-    function EditableRow({ label, value, onChange }) {
-        return (
-            <div className="flex flex-col gap-1 py-2 border-b border-border">
-                <span className="text-xs text-muted-foreground">{label}</span>
-                <div className="ring-1 ring-primary rounded-md px-2 py-1">
-                    <DatePicker value={value} onChange={onChange} />
-                </div>
-            </div>
-        )
-    }
 
     return (
         <div className="rounded-md border overflow-y-auto mt-12 max-h-screen">

@@ -46,7 +46,7 @@ export default function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>Navigazione</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -68,7 +68,7 @@ export default function AppSidebar() {
         <div className="group-data-[collapsible=icon]:hidden space-y-2 text-xs text-muted-foreground">
           <div className="flex items-center justify-between">
             <span>Update: {lastUpdate?.last_update ?? '—'}</span>
-            <span>v1.6.1</span>
+            <span>v1.6.3</span>
           </div>
 
           <a

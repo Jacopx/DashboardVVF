@@ -14,12 +14,10 @@ const MONTH_LABELS = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu',
 const DAY_LABELS = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom']
 const COLORS = ['#1a1a1a', '#450a0a', '#7f1d1d', '#ef4444']
 
-// Returns 0=Mon … 6=Sun for a LOCAL date
 function dayRowIndex(d) {
     return d.getDay() === 0 ? 6 : d.getDay() - 1
 }
 
-// Format a local Date as YYYY-MM-DD without UTC shift
 function localIsoDate(d) {
     const y = d.getFullYear()
     const m = String(d.getMonth() + 1).padStart(2, '0')
@@ -27,7 +25,6 @@ function localIsoDate(d) {
     return `${y}-${m}-${day}`
 }
 
-// Integer day-difference between two local dates (no DST drift)
 function daysBetween(a, b) {
     const utcA = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())
     const utcB = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate())
@@ -48,8 +45,8 @@ function weekEndOnOrAfter(d) {
 
 export default function YearHeatmap({ data, year }) {
     const [tooltip, setTooltip] = useState(null)
-    const { svgContent, width, height } = useMemo(() => {
-        // Build counts map using LOCAL date strings to avoid UTC shift
+
+    const { monthLabels, dayLabels, cells, width, height } = useMemo(() => {
         const counts = {}
         data.forEach(op => {
             if (!op.dt_exit) return
@@ -74,7 +71,6 @@ export default function YearHeatmap({ data, year }) {
         const start = weekStartOnOrBefore(jan1)
         const end = weekEndOnOrAfter(dec31)
 
-        // Use integer day counts to avoid DST/rounding issues
         const totalDays = daysBetween(start, end) + 1
         const weeks = Math.ceil(totalDays / 7)
 
@@ -89,59 +85,51 @@ export default function YearHeatmap({ data, year }) {
         const gridOriginX = OUTER_PAD + AXIS_WIDTH + AXIS_GAP + GRID_PAD
         const gridOriginY = OUTER_PAD + LABEL_ROW_HEIGHT + GRID_PAD
 
-        const rects = []
-
-        // Month labels
-        for (let m = 0; m < 12; m++) {
+        // Month label data
+        const monthLabels = Array.from({ length: 12 }, (_, m) => {
             const firstDay = new Date(yearInt, m, 1)
             const weekIndex = Math.floor(daysBetween(start, firstDay) / 7)
-            const x = gridOriginX + weekIndex * (CELL + GAP)
-            const y = OUTER_PAD + LABEL_ROW_HEIGHT - 2
-            rects.push(
-                <text key={`m${m}`} x={x} y={y} fontSize={9} fill="#888">
-                    {MONTH_LABELS[m]}
-                </text>
-            )
-        }
-
-        // Day labels — show Tue(1), Thu(3), Sat(5), i.e. odd rows
-        DAY_LABELS.forEach((label, row) => {
-            if (row % 2 === 0) return  // skip Mon, Wed, Fri, Sun
-            const x = OUTER_PAD + AXIS_WIDTH - 2
-            const y = gridOriginY + row * (CELL + GAP) + CELL / 2
-            rects.push(
-                <text key={`d${row}`} x={x} y={y} fontSize={9} fill="#888"
-                    textAnchor="end" dominantBaseline="middle">
-                    {label}
-                </text>
-            )
+            return {
+                key: `m${m}`,
+                label: MONTH_LABELS[m],
+                x: gridOriginX + weekIndex * (CELL + GAP),
+                y: OUTER_PAD + LABEL_ROW_HEIGHT - 2,
+            }
         })
 
-        // Cells — iterate by integer days to avoid DST drift
+        // Day label data — odd rows only
+        const dayLabels = DAY_LABELS
+            .map((label, row) => ({
+                key: `d${row}`,
+                label,
+                row,
+                x: OUTER_PAD + AXIS_WIDTH - 2,
+                y: gridOriginY + row * (CELL + GAP) + CELL / 2,
+            }))
+            .filter(({ row }) => row % 2 !== 0)
+
+        // Cell data
+        const cells = []
         for (let i = 0; i < totalDays; i++) {
             const current = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i)
+            const inYear = current.getFullYear() === yearInt
+            if (!inYear) continue
+
             const weekIndex = Math.floor(i / 7)
             const row = dayRowIndex(current)
-            const x = gridOriginX + weekIndex * (CELL + GAP)
-            const y = gridOriginY + row * (CELL + GAP)
             const dateStr = localIsoDate(current)
-            const inYear = current.getFullYear() === yearInt
-            const count = inYear ? (counts[dateStr] || 0) : 0
-            const fill = inYear ? color(count) : 'transparent'
+            const count = counts[dateStr] || 0
 
-            if (inYear) {
-                rects.push(
-                    <rect key={dateStr} x={x} y={y}
-                        width={CELL} height={CELL}
-                        rx={3} ry={3} fill={fill}
-                        onMouseEnter={e => setTooltip({ dateStr, count, ex: e.clientX, ey: e.clientY })}
-                        onMouseLeave={() => setTooltip(null)}
-                    />
-                )
-            }
+            cells.push({
+                dateStr,
+                x: gridOriginX + weekIndex * (CELL + GAP),
+                y: gridOriginY + row * (CELL + GAP),
+                fill: color(count),
+                count,
+            })
         }
 
-        return { svgContent: rects, width: svgW, height: svgH }
+        return { monthLabels, dayLabels, cells, width: svgW, height: svgH }
     }, [data, year])
 
     return (
@@ -154,7 +142,25 @@ export default function YearHeatmap({ data, year }) {
             <CardContent>
                 <div className="relative">
                     <svg width="100%" viewBox={`0 0 ${width} ${height}`}>
-                        {svgContent}
+                        {monthLabels.map(({ key, label, x, y }) => (
+                            <text key={key} x={x} y={y} fontSize={9} fill="#888">
+                                {label}
+                            </text>
+                        ))}
+                        {dayLabels.map(({ key, label, x, y }) => (
+                            <text key={key} x={x} y={y} fontSize={9} fill="#888"
+                                textAnchor="end" dominantBaseline="middle">
+                                {label}
+                            </text>
+                        ))}
+                        {cells.map(({ dateStr, x, y, fill, count }) => (
+                            <rect key={dateStr} x={x} y={y}
+                                width={CELL} height={CELL}
+                                rx={3} ry={3} fill={fill}
+                                onMouseEnter={e => setTooltip({ dateStr, count, ex: e.clientX, ey: e.clientY })}
+                                onMouseLeave={() => setTooltip(null)}
+                            />
+                        ))}
                     </svg>
                     {tooltip && (
                         <div
