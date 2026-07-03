@@ -73,8 +73,8 @@ export default function OperationDetail({ operation, onClose }) {
               <DetailRow label="Richiedente" value={data.caller} />
               <DetailRow label="Indirizzo" value={data.address} />
               <DetailRow label="Comune" value={data.loc} />
-              <DetailRow label="Chiamata" value={data.dt_exit} />
-              <DetailRow label="Chiusura" value={data.dt_close} />
+              <DetailRow label="Chiamata" value={data.dt_exit ? `${data.dt_exit.split('T')[0]} · ${data.dt_exit.split('T')[1].slice(0, 5)}` : '—'} />
+              <DetailRow label="Chiusura" value={data.dt_close ? `${data.dt_close.split('T')[0]} · ${data.dt_close.split('T')[1].slice(0, 5)}` : '—'} />
               <DetailRow label="Durata" value={`${duration.hours}h ${duration.minutes}m`} />
               <DetailRow label="Capo partenza" value={data.boss} />
               <DetailRow label="Operatore" value={data.operator} />
@@ -90,9 +90,9 @@ export default function OperationDetail({ operation, onClose }) {
                 <div key={i} className="rounded-md border p-2 mb-2 text-xs space-y-1">
                   <p className="font-medium">{start.vehicle}</p>
                   <p className="text-muted-foreground">{start.boss ?? '—'}</p>
-                  <p className="text-muted-foreground">↑ {start.exit_dt ?? '—'}</p>
-                  <p className="text-muted-foreground">● {start.inplace_dt ?? '—'}</p>
-                  <p className="text-muted-foreground">↓ {start.back_dt ?? '—'}</p>
+                  <p className="text-muted-foreground">↑ {start.dt_exit ? `${start.dt_exit.split('T')[0]} · ${start.dt_exit.split('T')[1].slice(0, 5)}` : '—'}</p>
+                  <p className="text-muted-foreground">● {start.inplace_dt ? `${start.inplace_dt.split('T')[0]} · ${start.inplace_dt.split('T')[1].slice(0, 5)}` : '—'}</p>
+                  <p className="text-muted-foreground">↓ {start.back_dt ? `${start.back_dt.split('T')[0]} · ${start.back_dt.split('T')[1].slice(0, 5)}` : '—'}</p>
                 </div>
               ))}
             </div>
