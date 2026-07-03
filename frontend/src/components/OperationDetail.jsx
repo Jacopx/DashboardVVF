@@ -90,7 +90,7 @@ export default function OperationDetail({ operation, onClose }) {
                 <div key={i} className="rounded-md border p-2 mb-2 text-xs space-y-1">
                   <p className="font-medium">{start.vehicle}</p>
                   <p className="text-muted-foreground">{start.boss ?? '—'}</p>
-                  <p className="text-muted-foreground">↑ {start.dt_exit ? `${start.dt_exit.split('T')[0]} · ${start.dt_exit.split('T')[1].slice(0, 5)}` : '—'}</p>
+                  <p className="text-muted-foreground">↑ {start.exit_dt ? `${start.exit_dt.split('T')[0]} · ${start.exit_dt.split('T')[1].slice(0, 5)}` : '—'}</p>
                   <p className="text-muted-foreground">● {start.inplace_dt ? `${start.inplace_dt.split('T')[0]} · ${start.inplace_dt.split('T')[1].slice(0, 5)}` : '—'}</p>
                   <p className="text-muted-foreground">↓ {start.back_dt ? `${start.back_dt.split('T')[0]} · ${start.back_dt.split('T')[1].slice(0, 5)}` : '—'}</p>
                 </div>
