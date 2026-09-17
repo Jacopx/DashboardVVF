@@ -65,6 +65,7 @@ export default function StaffDetail({ starts, staff, onClose }) {
 
     const statusColor = {
         'ATTIVO': 'bg-green-900/40 text-green-400',
+        'PAUSA': 'bg-yellow-900/40 text-yellow-400',
         'PERMANENTE': 'bg-orange-900/40 text-orange-400',
         'RITIRATO': 'bg-red-900/40 text-red-400',
     }
